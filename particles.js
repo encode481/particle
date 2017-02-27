@@ -1501,9 +1501,12 @@ window.pJSDom = [];
 window.updateSettings = function(tag_id, params) {
   if(!tag_id)
     tag_id = 'particles-js';
-
   if (pJSDom.length && params) {
     Object.deepExtend(pJSDom[pJSDom.length - 1].pJS, params);
+    var pJS = pJSDom[pJSDom.length - 1].pJS;
+    pJS.fn.particlesEmpty();
+    pJS.fn.particlesCreate();
+    pJS.fn.particlesDraw();
   }
 }
 
