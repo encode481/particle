@@ -498,7 +498,6 @@ var pJS = function(tag_id, params) {
 
   pJS.fn.particlesCreate = function(){
     if (pJS.particles.init != null && pJS.particles.init.length != 0) {
-      pJS.particles.number.value =  pJS.particles.init.length;
       for (var elem of pJS.particles.init) {
         pJS.particles.array.push(new pJS.fn.particle({ value : elem }, pJS.particles.opacity.value));
       }
