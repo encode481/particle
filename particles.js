@@ -7,8 +7,7 @@
 /* v2.0.0
 /* ----------------------------------------------- */
 
-var pJS = function(tag_id, params){
-
+var pJS = function(tag_id, params) {
   var canvas_el = document.querySelector('#'+tag_id+' > .particles-js-canvas-el');
 
   /* particles.js variables with default values */
@@ -498,9 +497,15 @@ var pJS = function(tag_id, params){
 
 
   pJS.fn.particlesCreate = function(){
-    pJS.particles.number.value =  pJS.particles.init.length;
-    for(var elem of pJS.particles.init) {
-      pJS.particles.array.push(new pJS.fn.particle({value:elem}, pJS.particles.opacity.value));
+    if (pJS.particles.init != null && pJS.particles.init.length != 0) {
+      pJS.particles.number.value =  pJS.particles.init.length;
+      for (var elem of pJS.particles.init) {
+        pJS.particles.array.push(new pJS.fn.particle({ value : elem }, pJS.particles.opacity.value));
+      }
+    } else {
+      for(var i = 0; i < pJS.particles.number.value; i++) {
+        pJS.particles.array.push(new pJS.fn.particle(pJS.particles.color, pJS.particles.opacity.value));
+      }
     }
   };
 
@@ -638,8 +643,8 @@ var pJS = function(tag_id, params){
   pJS.fn.particlesDraw = function(){
 
     /* clear canvas */
-    if (!window.stopped)
-      pJS.canvas.ctx.clearRect(0, 0, pJS.canvas.w, pJS.canvas.h);
+
+    pJS.canvas.ctx.clearRect(0, 0, pJS.canvas.w, pJS.canvas.h);
 
     /* update each particles param */
     pJS.fn.particlesUpdate();
@@ -675,8 +680,7 @@ var pJS = function(tag_id, params){
 
   /* ---------- pJS functions - particles interaction ------------ */
 
-  pJS.fn.interact.linkParticles = function(p1, p2, ignoreDistance){
-    if (window.stopped) return;
+  pJS.fn.interact.linkParticles = function(p1, p2){
     var dx = p1.x - p2.x,
         dy = p1.y - p2.y,
         dist = Math.sqrt(dx*dx + dy*dy);
@@ -1420,31 +1424,6 @@ var pJS = function(tag_id, params){
   };
 
 
-  this.stop = function() {
-    pJS.particles.move.speed = 0;
-    pJS.fn.canvasClear();
-    var prevP = null,
-        pos = 1;
-    for (var p of pJS.particles.array) {
-      p.y = pJS.canvas.h * pos / (pJS.particles.array.length + 1);
-      p.x = Math.random() * pJS.canvas.w;
-      pos++;
-    }
-    pJS.fn.particlesDraw();
-    for (var p of pJS.particles.array) {
-      if (prevP)
-        pJS.fn.interact.drawLink(p, prevP);
-      prevP = p;
-    }
-  }
-
-  this.start = function() {
-    pJS.particles.move.speed = 5;
-    pJS.fn.particlesEmpty();
-    pJS.fn.particlesCreate();
-    pJS.fn.particlesDraw();
-  }
-
   /* ---------- pJS - start ------------ */
 
 
@@ -1523,21 +1502,11 @@ window.updateSettings = function(tag_id, params) {
   if(!tag_id)
     tag_id = 'particles-js';
 
-  if (pJSDom.length && params)
+  if (pJSDom.length && params) {
     Object.deepExtend(pJSDom[pJSDom.length - 1].pJS, params);
+  }
 }
 
-window.stopped = false;
-
-window.onclick = function() {
-  var pJS = pJSDom[pJSDom.length - 1];
-  window.stopped = !window.stopped;
-  if (!window.stopped) {
-    pJS.start();
-  } else {
-    pJS.stop();
-  }  
-}
 
 window.setSize = function(w, h, tag_id){
   if(typeof(tag_id) != 'string'){
