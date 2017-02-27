@@ -498,7 +498,6 @@ var pJS = function(tag_id, params) {
 
   pJS.fn.particlesCreate = function(){
     if (pJS.particles.init != null && pJS.particles.init.length != 0) {
-      pJS.particles.number.value =  pJS.particles.init.length;
       for (var elem of pJS.particles.init) {
         pJS.particles.array.push(new pJS.fn.particle({ value : elem }, pJS.particles.opacity.value));
       }
@@ -1501,9 +1500,24 @@ window.pJSDom = [];
 window.updateSettings = function(tag_id, params) {
   if(!tag_id)
     tag_id = 'particles-js';
-
   if (pJSDom.length && params) {
     Object.deepExtend(pJSDom[pJSDom.length - 1].pJS, params);
+    pJS.fn.particlesEmpty();
+    pJS.fn.particlesCreate();
+    pJS.fn.particlesDraw();
+  }
+}
+
+window.updateParticlesArray = function(params, tag_id) {
+  if(!tag_id)
+    tag_id = 'particles-js';
+  if (pJSDom.length && Array.isArray(params)) {
+    var pJS = pJSDom[pJSDom.length - 1].pJS;
+    pJS.particles.init = params;
+
+    pJS.fn.particlesEmpty();
+    pJS.fn.particlesCreate();
+    pJS.fn.particlesDraw();
   }
 }
 
