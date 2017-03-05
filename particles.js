@@ -55,6 +55,8 @@ var pJS = function(tag_id, params) {
       },
       size: {
         value: 20,
+        minRadius: 0,
+        maxRadius: 0,
         random: false,
         anim: {
           enable: false,
@@ -237,18 +239,21 @@ var pJS = function(tag_id, params) {
 
   /* --------- pJS functions - particles ----------- */
 
-  pJS.fn.particle = function(color, opacity, position){
+  pJS.fn.particle = function(color, opacity, position, additionalParams){
 
     /* size */
-    this.radius = (pJS.particles.size.random ? Math.random() : 1) * pJS.particles.size.value;
-    if(pJS.particles.size.anim.enable){
-      this.size_status = false;
-      this.vs = pJS.particles.size.anim.speed / 100;
-      if(!pJS.particles.size.anim.sync){
-        this.vs = this.vs * Math.random();
-      }
+    if (additionalParams != null && additionalParams["weight"] != null) {
+      this.radius = pJS.particles.size.minRadius + (pJS.particles.size.maxRadius - pJS.particles.size.minRadius) * additionalParams["weight"]
+    } else {
+      this.radius = (pJS.particles.size.random ? Math.random() : 1) * pJS.particles.size.value;
     }
-
+    if (pJS.particles.size.anim.enable){
+        this.size_status = false;
+        this.vs = pJS.particles.size.anim.speed / 100;
+        if(!pJS.particles.size.anim.sync){
+          this.vs = this.vs * Math.random();
+        }
+    }
     /* position */
     this.x = position ? position.x : Math.random() * pJS.canvas.w;
     this.y = position ? position.y : Math.random() * pJS.canvas.h;
@@ -1497,20 +1502,17 @@ function isInArray(value, array) {
 
 window.pJSDom = [];
 
-window.updateSettings = function(tag_id, params) {
-  if(!tag_id)
-    tag_id = 'particles-js';
+window.updateSettings = function(params) {
   if (pJSDom.length && params) {
     Object.deepExtend(pJSDom[pJSDom.length - 1].pJS, params);
+    var pJS = pJSDom[pJSDom.length - 1].pJS;
     pJS.fn.particlesEmpty();
     pJS.fn.particlesCreate();
     pJS.fn.particlesDraw();
   }
 }
 
-window.updateParticlesArray = function(params, tag_id) {
-  if(!tag_id)
-    tag_id = 'particles-js';
+window.updateParticlesArray = function(params) {
   if (pJSDom.length && Array.isArray(params)) {
     var pJS = pJSDom[pJSDom.length - 1].pJS;
     pJS.particles.init = params;
@@ -1530,6 +1532,18 @@ window.setSize = function(w, h, tag_id){
   var canvas = document.getElementById(tag_id);
   canvas.style.width = w;
   canvas.style.height = h;
+}
+
+window.setMinMaxRadius = function(min, max) {
+  window.updateSettings({
+    "particles": {
+      "size": {
+        "minRadius": min,
+        "maxRadius": max
+      }
+    }
+  })
+    
 }
 
 window.particlesJS = function(tag_id, params){
