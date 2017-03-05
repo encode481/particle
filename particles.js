@@ -315,6 +315,7 @@ var pJS = function(tag_id, params) {
         this.vo = this.vo * Math.random();
       }
     }
+    if (opacity) this.opacity = opacity;
 
     /* animation - velocity for speed */
     var velbase = {}
@@ -503,8 +504,8 @@ var pJS = function(tag_id, params) {
 
   pJS.fn.particlesCreate = function(){
     if (pJS.particles.init != null && pJS.particles.init.length != 0) {
-      for (var elem of pJS.particles.init) {
-        pJS.particles.array.push(new pJS.fn.particle({ value : elem }, pJS.particles.opacity.value));
+      for (var particle of pJS.particles.init) {
+        pJS.particles.array.push(new pJS.fn.particle({ value : particle.color }, particle.alpha, null, { weight: particle.weight }));
       }
     } else {
       for(var i = 0; i < pJS.particles.number.value; i++) {

@@ -24,8 +24,17 @@ particlesJS('particles-js',
         "value": "#FFFFFF"
       },
       "init": [
-        "#FFFFFF","#FFFFFF","#FFFF00","#FFFF00","#00FFFF","#00FFFF","#FF00FF","#FF00FF","#000000","#000000",
-        "#FFFFFF","#FFFFFF","#FFFF00","#FFFF00","#00FFFF","#00FFFF","#FF00FF","#FF00FF","#000000","#000000"
+        {"color": "#FFFFFF", "weight": 0.28, "alpha": 0.54},
+        {"color": "#FFFFFF", "weight": 0.18, "alpha": 0.54},
+        {"color": "#FFFF00", "weight": 0.38, "alpha": 0.54},
+        {"color": "#FFFF00", "weight": 0.25, "alpha": 0.54},
+        {"color": "#00FFFF", "weight": 0.78, "alpha": 0.54},
+        {"color": "#00FFFF", "weight": 0.48, "alpha": 0.54},
+        {"color": "#FF00FF", "weight": 0.58, "alpha": 0.54},
+        {"color": "#FF00FF", "weight": 0.19, "alpha": 0.54},
+        {"color": "#000000", "weight": 0.93, "alpha": 0.54},
+        {"color": "#000000", "weight": 0.67, "alpha": 0.54}
+        
       ],
       "shape": {
         "type": "circle",
@@ -50,6 +59,8 @@ particlesJS('particles-js',
       "size": {
         "value": 5,
         "random": false,
+        "minRadius": 1,
+        "maxRadius": 10,
         "anim": {
           "enable": false,
           "speed": 40,
